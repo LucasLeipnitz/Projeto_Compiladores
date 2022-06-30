@@ -1,10 +1,7 @@
-CC=gcc
-CFLAGS=-I.
-DEPS = tokens.h
+all: etapa1
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-etapa1: main.o lex.yy.o
-	$(CC) -o etapa1 main.o lex.yy.o
-
+lex.yy.c: scanner.l
+	flex scanner.l
+	
+etapa1: lex.yy.c main.c tokens.h
+	gcc -o etapa1 main.c lex.yy.c

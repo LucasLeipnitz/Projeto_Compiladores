@@ -9,21 +9,24 @@ white [ \t]+
 digitos [0-9]
 caracteres [a-zA-Z]
 caracteres_especiais [,;:()\[\]\{\}+\-\|\*\/<>=!&%#^\.$]
+negate [^'*/']
 
 %%
 
-\n {num_lines++;} 
+"\n" {num_lines++;} 
 
 {white} { }
 {digitos}+ { return TK_LIT_INT;}
 {digitos}+"."({digitos}+|{digitos}+("E"|"e"){digitos}+) { return TK_LIT_FLOAT;}
+"-"{digitos}+ { return TK_LIT_INT;}
+"-"{digitos}+"."({digitos}+|{digitos}+("E"|"e"){digitos}+) { return TK_LIT_FLOAT;}
 "\""({caracteres}|{digitos}|{caracteres_especiais}|" "|"_")+"\"" { return TK_LIT_STRING;}
 "'"({caracteres}|{digitos}|{caracteres_especiais})"'" { return TK_LIT_CHAR;}
 "true" { return TK_LIT_TRUE;}
 "false" { return TK_LIT_FALSE;}
 
 {caracteres_especiais} {int ascii = (int) yytext[0]; return ascii;}
-"//"(.*)|"/*"(.*)"*/" {;}
+"//"(.*)|"/*"((\*+[^/*])|([^*]))*\**"*/" { int controle = 0; while(yytext[controle] != '\0'){ if(yytext[controle] == '\n'){num_lines++;} controle++;};}
 
 "int" {return TK_PR_INT;}
 "float" {return TK_PR_FLOAT;}
@@ -64,7 +67,7 @@ caracteres_especiais [,;:()\[\]\{\}+\-\|\*\/<>=!&%#^\.$]
 
 ({caracteres}|"_")(({caracteres}|{digitos})*) { return TK_IDENTIFICADOR;}
 
-. {return TOKEN_ERRO;}
+. { return TOKEN_ERRO;}
 
 %%
 
