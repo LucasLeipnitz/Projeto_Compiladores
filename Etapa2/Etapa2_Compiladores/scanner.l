@@ -1,5 +1,5 @@
 %{
-#include "tokens.h"
+#include "parser.tab.h"
 int num_lines = 1;
 %}
 
@@ -39,7 +39,7 @@ negate [^'*/']
 "while" {return TK_PR_WHILE;}
 "do" {return TK_PR_DO;}
 "input" {return TK_PR_INPUT;}
-"outp" {return TK_PR_OUTPUT;}
+"output" {return TK_PR_OUTPUT;}
 "return" {return TK_PR_RETURN;}
 "const" {return TK_PR_CONST;}
 "static" {return TK_PR_STATIC;}

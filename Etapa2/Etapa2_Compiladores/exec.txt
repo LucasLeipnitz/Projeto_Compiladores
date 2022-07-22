@@ -1,3 +1,0 @@
-flex scanner.l
-bison -d parser.y
-gcc -o etapa2 main.c lex.yy.c parser.tab.c parser.tab.h -lfl
